@@ -8,65 +8,65 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <style>
   :root {
-    --bg: #F7EFE3; --surface: #EDE5D8; --surface-alt: #E3DACB;
-    --ink: #1a1410; --ink-soft: #4a4035; --ink-muted: #8a7f70;
-    --red: #8B2500; --green: #2D4A3E; --gold: #7A6830;
-    --border: #D4CABC; --border-dark: #B8AD9E; --accent: #6B1D1D;
+    --bg: #E64D4D; --surface: #D94444; --surface-alt: #CC3D3D;
+    --ink: #FFFFFF; --ink-soft: #FFE0E0; --ink-muted: #FFB0B0;
+    --red: #1a1410; --green: #FFFFFF; --gold: #7A6830;
+    --border: rgba(255,255,255,0.25); --border-dark: rgba(255,255,255,0.4); --accent: #FFE0E0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Zen Kaku Gothic New', sans-serif; }
   .container { max-width: 720px; margin: 0 auto; padding: 36px 24px; }
 
-  h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
-  .subtitle { font-size: 11px; color: var(--ink-muted); margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
-  .label { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; font-weight: 700; }
+  h1 { font-size: 40px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .subtitle { font-size: 13px; color: var(--ink-muted); margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
+  .label { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; font-weight: 700; }
   .label-hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
 
-  textarea, input[type="text"] {
+  textarea, input[type="text"], input[type="password"] {
     width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
-    color: var(--ink); padding: 10px 12px; font-size: 14px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    color: var(--ink); padding: 10px 12px; font-size: 16px; font-family: 'Zen Kaku Gothic New', sans-serif;
     outline: none; transition: border-color 0.2s; line-height: 1.6;
   }
-  textarea:focus, input[type="text"]:focus { border-color: var(--border-dark); }
-  textarea::placeholder, input::placeholder { color: var(--ink-muted); opacity: 0.5; }
+  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: var(--border-dark); }
+  textarea::placeholder, input::placeholder { color: rgba(255,255,255,0.35); opacity: 1; }
   textarea { resize: vertical; }
 
   .btn {
-    padding: 8px 18px; font-size: 12px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
+    padding: 8px 18px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
     border: none; border-radius: 3px; cursor: pointer; transition: all 0.2s;
   }
-  .btn-red { background: var(--red); color: #fff; }
+  .btn-red { background: #1a1410; color: #fff; }
   .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; }
-  .btn-green { background: var(--green); color: #fff; }
-  .btn-outline { background: transparent; color: var(--ink-soft); border: 1px solid var(--border); }
-  .btn-sm { padding: 4px 10px; font-size: 10px; }
+  .btn-green { background: #FFFFFF; color: #E64D4D; }
+  .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
   .btn-feed {
-    padding: 7px 13px; font-size: 12px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
-    border: 1.5px solid var(--green); border-radius: 3px; cursor: pointer; transition: all 0.2s;
+    padding: 7px 13px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
+    border: 1.5px solid #fff; border-radius: 3px; cursor: pointer; transition: all 0.2s;
   }
-  .btn-feed.active { background: var(--green); color: var(--bg); }
-  .btn-feed:not(.active) { background: transparent; color: var(--green); }
+  .btn-feed.active { background: #fff; color: #E64D4D; }
+  .btn-feed:not(.active) { background: transparent; color: #fff; }
 
   .toggle-group { display: flex; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; }
   .toggle-btn {
-    padding: 8px 14px; font-size: 12px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    padding: 8px 14px; font-size: 14px; font-family: 'Zen Kaku Gothic New', sans-serif;
     border: none; cursor: pointer; transition: all 0.2s;
   }
-  .toggle-btn.active { background: var(--ink); color: var(--bg); font-weight: 700; }
+  .toggle-btn.active { background: #fff; color: #E64D4D; font-weight: 700; }
   .toggle-btn:not(.active) { background: transparent; color: var(--ink-soft); font-weight: 400; }
 
   .output-box {
-    background: #fff; border: 1px solid var(--border); border-radius: 3px;
+    background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 3px;
     padding: 20px 18px; max-height: 460px; overflow-y: auto;
-    font-size: 15px; line-height: 2; white-space: pre-wrap; color: var(--ink);
+    font-size: 17px; line-height: 2; white-space: pre-wrap; color: #fff;
   }
   .analysis-box {
-    margin-top: 14px; background: var(--surface); border: 1px solid var(--border);
-    border-left: 3px solid var(--red); border-radius: 3px; padding: 14px 16px;
+    margin-top: 14px; background: rgba(0,0,0,0.1); border: 1px solid var(--border);
+    border-left: 3px solid #fff; border-radius: 3px; padding: 14px 16px;
   }
-  .completion-area { margin-top: 20px; border-top: 2px solid var(--red); padding-top: 16px; }
-  .completion-area textarea { border-color: rgba(139,37,0,0.25); }
-  .completion-area textarea:focus { border-color: var(--red); }
+  .completion-area { margin-top: 20px; border-top: 2px solid #fff; padding-top: 16px; }
+  .completion-area textarea { border-color: rgba(255,255,255,0.3); }
+  .completion-area textarea:focus { border-color: #fff; }
 
   .feed-panel {
     background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
@@ -74,14 +74,14 @@
   }
   .feed-item {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 10px; background: var(--bg); border-radius: 3px; font-size: 12px; margin-bottom: 4px;
+    padding: 6px 10px; background: rgba(0,0,0,0.1); border-radius: 3px; font-size: 13px; margin-bottom: 4px;
   }
   .learned-profile {
-    background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
-    padding: 12px; margin-bottom: 10px; font-size: 11px; line-height: 1.7;
+    background: rgba(0,0,0,0.1); border: 1px solid var(--border); border-radius: 3px;
+    padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.7;
   }
-  .tag { padding: 2px 7px; font-size: 10px; background: var(--green); color: var(--bg); border-radius: 2px; display: inline-block; margin-right: 5px; }
-  .section-label { font-size: 10px; font-weight: 700; color: var(--ink-muted); margin-bottom: 3px; letter-spacing: 0.15em; }
+  .tag { padding: 2px 7px; font-size: 12px; background: #fff; color: #E64D4D; border-radius: 2px; display: inline-block; margin-right: 5px; }
+  .section-label { font-size: 12px; font-weight: 700; color: #FFB0B0; margin-bottom: 3px; letter-spacing: 0.15em; }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .flex { display: flex; }
@@ -97,15 +97,15 @@
   .hidden { display: none; }
 
   .footer { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
-  .footer-text { font-size: 9px; color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; }
-  .footer-brand { font-size: 9px; color: var(--ink-muted); font-family: 'Playfair Display', serif; font-style: italic; }
+  .footer-text { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .footer-brand { font-size: 11px; color: var(--ink-muted); font-family: 'Playfair Display', serif; font-style: italic; }
 
   @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
-  .cursor-blink { display: inline-block; width: 2px; height: 16px; background: var(--red); margin-left: 2px; animation: blink 1s infinite; vertical-align: text-bottom; }
+  .cursor-blink { display: inline-block; width: 2px; height: 16px; background: #fff; margin-left: 2px; animation: blink 1s infinite; vertical-align: text-bottom; }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -113,15 +113,16 @@
 <!-- API Key Gate -->
 <div id="keyGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center">
   <div style="max-width:400px;width:100%;padding:24px;text-align:center">
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:4px">Mousou Stand</h1>
-    <div style="font-size:11px;color:var(--ink-muted);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:32px">Breaking News Fiction — ねぇミンド</div>
+    <img src="nc_log_4.png" alt="Mousou Stand" style="width:70px;height:auto;margin-bottom:12px">
+    <h1 style="font-size:32px;font-weight:900;margin-bottom:4px">Mousou Stand</h1>
+    <div style="font-size:13px;color:var(--ink-muted);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:32px">Breaking News Fiction — ねぇミンド</div>
     <div style="text-align:left;margin-bottom:16px">
       <label class="label">Anthropic API Key</label>
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;color:var(--ink);padding:12px;font-size:14px;font-family:'Zen Kaku Gothic New',sans-serif;outline:none">
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
     </div>
-    <button class="btn btn-red" style="width:100%;padding:12px;font-size:14px" onclick="saveApiKey()">起動</button>
-    <div id="keyError" style="font-size:11px;color:var(--red);margin-top:10px;display:none"></div>
-    <div style="font-size:10px;color:var(--ink-muted);margin-top:20px;line-height:1.6">
+    <button class="btn btn-red" style="width:100%;padding:12px;font-size:16px" onclick="saveApiKey()">起動</button>
+    <div id="keyError" style="font-size:13px;color:#fff;margin-top:10px;display:none"></div>
+    <div style="font-size:12px;color:var(--ink-muted);margin-top:20px;line-height:1.6">
       APIキーはブラウザのlocalStorageにのみ保存されます。<br>外部に送信されることはありません。
     </div>
   </div>
@@ -131,9 +132,12 @@
 
   <!-- Header -->
   <div class="flex flex-between flex-center" style="margin-bottom:32px">
-    <div>
-      <h1>Mousou Stand</h1>
-      <div class="subtitle">Breaking News Fiction — ねぇミンド</div>
+    <div class="flex flex-center gap-10">
+      <img src="nc_log_4.png" alt="Mousou Stand" style="width:70px;height:auto">
+      <div>
+        <h1>Mousou Stand</h1>
+        <div class="subtitle">Breaking News Fiction — ねぇミンド</div>
+      </div>
     </div>
     <button class="btn-feed" id="feedToggle" onclick="toggleFeed()">餌</button>
   </div>
@@ -141,20 +145,20 @@
   <!-- Feed Panel -->
   <div id="feedPanel" class="feed-panel hidden">
     <div class="flex flex-between flex-center" style="margin-bottom:10px">
-      <div style="font-size:12px;font-weight:700;color:var(--green)">餌 — 文体学習</div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink)">餌 — 文体学習</div>
       <div class="flex gap-8">
-        <label class="btn btn-green" style="padding:5px 12px;font-size:11px;cursor:pointer">
+        <label class="btn btn-green" style="padding:5px 12px;font-size:13px;cursor:pointer">
           ファイル追加
           <input type="file" id="fileInput" accept=".txt,.md,.docx,.doc,.pdf" multiple onchange="handleFiles(event)" style="display:none">
         </label>
-        <button class="btn btn-red" id="learnBtn" style="padding:5px 12px;font-size:11px" onclick="handleLearn()">学習</button>
+        <button class="btn btn-red" id="learnBtn" style="padding:5px 12px;font-size:13px" onclick="handleLearn()">学習</button>
       </div>
     </div>
-    <div style="font-size:10px;color:var(--ink-muted);margin-bottom:8px">.txt .md .docx .pdf 対応　ファイル追加後「学習」で文体を吸収</div>
-    <div id="feedStatus" style="font-size:11px;color:var(--green);margin-bottom:8px;font-weight:700;display:none"></div>
+    <div style="font-size:12px;color:var(--ink-muted);margin-bottom:8px">.txt .md .docx .pdf 対応　ファイル追加後「学習」で文体を吸収</div>
+    <div id="feedStatus" style="font-size:13px;color:var(--ink);margin-bottom:8px;font-weight:700;display:none"></div>
     <div id="learnedProfile" class="learned-profile hidden"></div>
     <div id="feedList"></div>
-    <div id="goalCount" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--ink-muted);display:none"></div>
+    <div id="goalCount" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px;color:var(--ink-muted);display:none"></div>
   </div>
 
   <!-- Topic -->
@@ -192,19 +196,19 @@
       <button class="toggle-btn" id="toggleLong" onclick="setLength('LONG')">中篇 4,000〜6,000字</button>
     </div>
     <button class="btn btn-red" id="generateBtn" onclick="generate(false)">生成</button>
-    <div style="font-size:10px;color:var(--ink-muted);margin-left:auto">⌘+Enter</div>
+    <div style="font-size:12px;color:var(--ink-muted);margin-left:auto">⌘+Enter</div>
   </div>
 
   <!-- Error -->
-  <div id="error" style="padding:10px 14px;background:#f5e6e2;border:1px solid rgba(139,37,0,0.2);border-radius:3px;color:var(--red);font-size:12px;margin-bottom:16px;display:none"></div>
+  <div id="error" style="padding:10px 14px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.2);border-radius:3px;color:#fff;font-size:13px;margin-bottom:16px;display:none"></div>
 
   <!-- Output Section -->
   <div id="outputSection" class="hidden">
     <div class="flex flex-between flex-center" style="margin-bottom:8px">
       <div class="label" style="margin-bottom:0" id="outputLabel">叩き台</div>
       <div class="flex flex-center gap-8">
-        <span style="font-size:11px;color:var(--ink-muted)" id="charCount">0字</span>
-        <span id="statusMsg" style="font-size:11px;color:var(--green);font-weight:700;display:none"></span>
+        <span style="font-size:13px;color:var(--ink-muted)" id="charCount">0字</span>
+        <span id="statusMsg" style="font-size:13px;color:var(--ink);font-weight:700;display:none"></span>
         <button class="btn btn-outline btn-sm" id="copyBtn" onclick="handleCopy()" style="display:none">コピー</button>
       </div>
     </div>
@@ -230,8 +234,8 @@
       <div class="flex flex-between flex-center" style="margin-bottom:8px">
         <label class="label" style="margin-bottom:0;color:var(--red)">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
         <div class="flex flex-center gap-8">
-          <span style="font-size:11px;color:var(--ink-muted)" id="completionCharCount"></span>
-          <button class="btn btn-red btn-sm" id="goalBtn" style="padding:5px 14px;font-size:11px;display:none" onclick="handleGoal()">ゴール</button>
+          <span style="font-size:13px;color:var(--ink-muted)" id="completionCharCount"></span>
+          <button class="btn btn-red btn-sm" id="goalBtn" style="padding:5px 14px;font-size:13px;display:none" onclick="handleGoal()">ゴール</button>
         </div>
       </div>
       <textarea id="completion" rows="4" placeholder="手直しが終わった完成稿をここに貼る。「ゴール」で叩き台→完成稿の差分を学習する"></textarea>
@@ -242,7 +246,7 @@
   <div class="footer">
     <div class="footer-text">Mousou Stand v4.0</div>
     <div class="flex flex-center gap-8">
-      <button onclick="resetApiKey()" style="background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:9px;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:0.1em;text-decoration:underline">APIキー変更</button>
+      <button onclick="resetApiKey()" style="background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:11px;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:0.1em;text-decoration:underline">APIキー変更</button>
       <div class="footer-brand">neh mind</div>
     </div>
   </div>
@@ -468,7 +472,7 @@ function renderFeed() {
     list.innerHTML = '<div style="font-size:12px;color:var(--ink-muted);padding:6px 0">テオの文章ファイルを食わせると、文体の精度が上がる</div>';
   } else {
     list.innerHTML = state.feedTexts.map((f,i) =>
-      `<div class="feed-item"><div><span style="font-weight:700">${f.name}</span><span style="color:var(--ink-muted);margin-left:8px">${f.text.length.toLocaleString()}字</span></div><button class="btn" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px;font-family:'Zen Kaku Gothic New',sans-serif" onclick="removeFeed(${i})">削除</button></div>`
+      `<div class="feed-item"><div><span style="font-weight:700">${f.name}</span><span style="color:var(--ink-muted);margin-left:8px">${f.text.length.toLocaleString()}字</span></div><button class="btn" style="background:none;border:none;color:#FFB0B0;cursor:pointer;font-size:13px;font-family:'Zen Kaku Gothic New',sans-serif" onclick="removeFeed(${i})">削除</button></div>`
     ).join("");
   }
 }
@@ -478,7 +482,7 @@ function renderLearnedProfile() {
   if (!state.learnedStyle) { hide("learnedProfile"); return; }
   show("learnedProfile");
   const s = state.learnedStyle;
-  let html = '<div style="font-weight:700;color:var(--red);margin-bottom:4px;font-size:10px;letter-spacing:0.15em">LEARNED PROFILE</div>';
+  let html = '<div style="font-weight:700;color:#FFB0B0;margin-bottom:4px;font-size:12px;letter-spacing:0.15em">LEARNED PROFILE</div>';
   if (s.tone) html += `<div><span style="color:var(--ink-muted)">トーン:</span> ${s.tone}</div>`;
   if (s.rhythm) html += `<div><span style="color:var(--ink-muted)">リズム:</span> ${s.rhythm}</div>`;
   if (s.humor_style) html += `<div><span style="color:var(--ink-muted)">ユーモア:</span> ${s.humor_style}</div>`;
@@ -501,11 +505,11 @@ function renderAnalysis(a) {
     html += '<div><div class="section-label">PILLARS</div><div>' + a.pillars.map(p=>`<span class="tag">${p}</span>`).join("") + "</div></div>";
   }
   if (a.strengths) {
-    html += `<div><div class="section-label">STRENGTHS</div><div style="font-size:11px;color:var(--ink-soft)">${a.strengths}</div></div>`;
+    html += `<div><div class="section-label">STRENGTHS</div><div style="font-size:13px;color:var(--ink-soft)">${a.strengths}</div></div>`;
   }
   html += "</div>";
   if (a.suggestions) {
-    html += `<div><div class="section-label">SUGGESTIONS</div><div style="font-size:11px;color:var(--accent)">${a.suggestions}</div></div>`;
+    html += `<div><div class="section-label">SUGGESTIONS</div><div style="font-size:13px;color:var(--accent)">${a.suggestions}</div></div>`;
   }
   $("analysisContent").innerHTML = html;
 }
