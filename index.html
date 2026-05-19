@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mousou Stand</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<style>
+  :root {
+    --bg: #F7EFE3; --surface: #EDE5D8; --surface-alt: #E3DACB;
+    --ink: #1a1410; --ink-soft: #4a4035; --ink-muted: #8a7f70;
+    --red: #8B2500; --green: #2D4A3E; --gold: #7A6830;
+    --border: #D4CABC; --border-dark: #B8AD9E; --accent: #6B1D1D;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Zen Kaku Gothic New', sans-serif; }
+  .container { max-width: 720px; margin: 0 auto; padding: 36px 24px; }
+
+  h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .subtitle { font-size: 11px; color: var(--ink-muted); margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
+  .label { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; font-weight: 700; }
+  .label-hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+  textarea, input[type="text"] {
+    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
+    color: var(--ink); padding: 10px 12px; font-size: 14px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    outline: none; transition: border-color 0.2s; line-height: 1.6;
+  }
+  textarea:focus, input[type="text"]:focus { border-color: var(--border-dark); }
+  textarea::placeholder, input::placeholder { color: var(--ink-muted); opacity: 0.5; }
+  textarea { resize: vertical; }
+
+  .btn {
+    padding: 8px 18px; font-size: 12px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
+    border: none; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-outline { background: transparent; color: var(--ink-soft); border: 1px solid var(--border); }
+  .btn-sm { padding: 4px 10px; font-size: 10px; }
+  .btn-feed {
+    padding: 7px 13px; font-size: 12px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
+    border: 1.5px solid var(--green); border-radius: 3px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-feed.active { background: var(--green); color: var(--bg); }
+  .btn-feed:not(.active) { background: transparent; color: var(--green); }
+
+  .toggle-group { display: flex; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .toggle-btn {
+    padding: 8px 14px; font-size: 12px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .toggle-btn.active { background: var(--ink); color: var(--bg); font-weight: 700; }
+  .toggle-btn:not(.active) { background: transparent; color: var(--ink-soft); font-weight: 400; }
+
+  .output-box {
+    background: #fff; border: 1px solid var(--border); border-radius: 3px;
+    padding: 20px 18px; max-height: 460px; overflow-y: auto;
+    font-size: 15px; line-height: 2; white-space: pre-wrap; color: var(--ink);
+  }
+  .analysis-box {
+    margin-top: 14px; background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--red); border-radius: 3px; padding: 14px 16px;
+  }
+  .completion-area { margin-top: 20px; border-top: 2px solid var(--red); padding-top: 16px; }
+  .completion-area textarea { border-color: rgba(139,37,0,0.25); }
+  .completion-area textarea:focus { border-color: var(--red); }
+
+  .feed-panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 18px; margin-bottom: 22px;
+  }
+  .feed-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 10px; background: var(--bg); border-radius: 3px; font-size: 12px; margin-bottom: 4px;
+  }
+  .learned-profile {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
+    padding: 12px; margin-bottom: 10px; font-size: 11px; line-height: 1.7;
+  }
+  .tag { padding: 2px 7px; font-size: 10px; background: var(--green); color: var(--bg); border-radius: 2px; display: inline-block; margin-right: 5px; }
+  .section-label { font-size: 10px; font-weight: 700; color: var(--ink-muted); margin-bottom: 3px; letter-spacing: 0.15em; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .flex { display: flex; }
+  .flex-between { justify-content: space-between; }
+  .flex-center { align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-10 { gap: 10px; }
+  .mb-14 { margin-bottom: 14px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-18 { margin-bottom: 18px; }
+  .mt-14 { margin-top: 14px; }
+  .mt-16 { margin-top: 16px; }
+  .hidden { display: none; }
+
+  .footer { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .footer-text { font-size: 9px; color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .footer-brand { font-size: 9px; color: var(--ink-muted); font-family: 'Playfair Display', serif; font-style: italic; }
+
+  @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+  .cursor-blink { display: inline-block; width: 2px; height: 16px; background: var(--red); margin-left: 2px; animation: blink 1s infinite; vertical-align: text-bottom; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="container" id="app">
+
+  <!-- Header -->
+  <div class="flex flex-between flex-center" style="margin-bottom:32px">
+    <div>
+      <h1>Mousou Stand</h1>
+      <div class="subtitle">Breaking News Fiction — ねぇミンド</div>
+    </div>
+    <button class="btn-feed" id="feedToggle" onclick="toggleFeed()">餌</button>
+  </div>
+
+  <!-- Feed Panel -->
+  <div id="feedPanel" class="feed-panel hidden">
+    <div class="flex flex-between flex-center" style="margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--green)">餌 — 文体学習</div>
+      <div class="flex gap-8">
+        <label class="btn btn-green" style="padding:5px 12px;font-size:11px;cursor:pointer">
+          ファイル追加
+          <input type="file" id="fileInput" accept=".txt,.md,.docx,.doc,.pdf" multiple onchange="handleFiles(event)" style="display:none">
+        </label>
+        <button class="btn btn-red" id="learnBtn" style="padding:5px 12px;font-size:11px" onclick="handleLearn()">学習</button>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--ink-muted);margin-bottom:8px">.txt .md .docx .pdf 対応　ファイル追加後「学習」で文体を吸収</div>
+    <div id="feedStatus" style="font-size:11px;color:var(--green);margin-bottom:8px;font-weight:700;display:none"></div>
+    <div id="learnedProfile" class="learned-profile hidden"></div>
+    <div id="feedList"></div>
+    <div id="goalCount" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--ink-muted);display:none"></div>
+  </div>
+
+  <!-- Topic -->
+  <div class="mb-14">
+    <label class="label">お題</label>
+    <textarea id="topic" rows="3" placeholder="今朝のニュース、気になった一言、妄想の種..."></textarea>
+  </div>
+
+  <!-- Opening -->
+  <div class="mb-14">
+    <label class="label">冒頭 <span class="label-hint">— 入力すると続きから生成</span></label>
+    <textarea id="opening" rows="2" placeholder="冒頭の文章をここに書くと、その続きから物語が始まる..."></textarea>
+  </div>
+
+  <!-- Characters -->
+  <div class="grid-2 mb-14">
+    <div>
+      <label class="label">主人公の名前</label>
+      <input type="text" id="protag" placeholder="一人称の語り手">
+    </div>
+    <div>
+      <label class="label">その他の登場人物</label>
+      <input type="text" id="otherChars" placeholder="カンマ区切り">
+    </div>
+  </div>
+  <div class="mb-18">
+    <label class="label">その他</label>
+    <input type="text" id="extra" placeholder="舞台設定、制約、トーンの指定など">
+  </div>
+
+  <!-- Controls -->
+  <div class="flex flex-center gap-10" style="margin-bottom:28px;flex-wrap:wrap">
+    <div class="toggle-group">
+      <button class="toggle-btn active" id="toggleShort" onclick="setLength('SHORT')">短篇 〜2,000字</button>
+      <button class="toggle-btn" id="toggleLong" onclick="setLength('LONG')">中篇 4,000〜6,000字</button>
+    </div>
+    <button class="btn btn-red" id="generateBtn" onclick="generate(false)">生成</button>
+    <div style="font-size:10px;color:var(--ink-muted);margin-left:auto">⌘+Enter</div>
+  </div>
+
+  <!-- Error -->
+  <div id="error" style="padding:10px 14px;background:#f5e6e2;border:1px solid rgba(139,37,0,0.2);border-radius:3px;color:var(--red);font-size:12px;margin-bottom:16px;display:none"></div>
+
+  <!-- Output Section -->
+  <div id="outputSection" class="hidden">
+    <div class="flex flex-between flex-center" style="margin-bottom:8px">
+      <div class="label" style="margin-bottom:0" id="outputLabel">叩き台</div>
+      <div class="flex flex-center gap-8">
+        <span style="font-size:11px;color:var(--ink-muted)" id="charCount">0字</span>
+        <span id="statusMsg" style="font-size:11px;color:var(--green);font-weight:700;display:none"></span>
+        <button class="btn btn-outline btn-sm" id="copyBtn" onclick="handleCopy()" style="display:none">コピー</button>
+      </div>
+    </div>
+    <div class="output-box" id="outputBox"></div>
+
+    <!-- Analysis -->
+    <div id="analysisBox" class="analysis-box hidden">
+      <div class="label" style="margin-bottom:8px;color:var(--red)">分析</div>
+      <div id="analysisContent"></div>
+    </div>
+
+    <!-- Revision -->
+    <div id="revisionSection" class="mt-16 hidden">
+      <label class="label">改稿指示</label>
+      <div class="flex gap-8">
+        <textarea id="reviseNote" rows="2" placeholder="「オチを変えて」「もっとエロく」「冒頭を短く」..." style="flex:1"></textarea>
+        <button class="btn btn-green" style="align-self:flex-end;white-space:nowrap" onclick="generate(true)">改稿</button>
+      </div>
+    </div>
+
+    <!-- Completion -->
+    <div id="completionSection" class="completion-area hidden">
+      <div class="flex flex-between flex-center" style="margin-bottom:8px">
+        <label class="label" style="margin-bottom:0;color:var(--red)">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
+        <div class="flex flex-center gap-8">
+          <span style="font-size:11px;color:var(--ink-muted)" id="completionCharCount"></span>
+          <button class="btn btn-red btn-sm" id="goalBtn" style="padding:5px 14px;font-size:11px;display:none" onclick="handleGoal()">ゴール</button>
+        </div>
+      </div>
+      <textarea id="completion" rows="4" placeholder="手直しが終わった完成稿をここに貼る。「ゴール」で叩き台→完成稿の差分を学習する"></textarea>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">Mousou Stand v4.0</div>
+    <div class="footer-brand">neh mind</div>
+  </div>
+</div>
+
+<script>
+// State
+let state = {
+  length: "SHORT",
+  feedTexts: [],
+  goalLearnings: [],
+  learnedStyle: null,
+  revisionHistory: [],
+  currentOutput: "",
+  loading: false,
+};
+
+const SK = { feed: "ms_feed_v4", goals: "ms_goals_v4", style: "ms_style_v4" };
+
+// ── Storage ──
+function loadStorage() {
+  try { const f = localStorage.getItem(SK.feed); if (f) state.feedTexts = JSON.parse(f); } catch {}
+  try { const g = localStorage.getItem(SK.goals); if (g) state.goalLearnings = JSON.parse(g); } catch {}
+  try { const s = localStorage.getItem(SK.style); if (s) state.learnedStyle = JSON.parse(s); } catch {}
+  renderFeed();
+  renderLearnedProfile();
+  updateFeedButton();
+  updateGoalCount();
+}
+function saveStorage(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+
+// ── System Prompt ──
+const BASE_SYSTEM_PROMPT = `あなたは作家・吉田テオ（Teo Yoshida）のゴーストライター「妄想機関」である。
+吉田テオの文体・思想・美学を完全にインストールした状態で、時事ネタを起点としたショートショートの叩き台を生成する。
+
+## 文体モジュール
+
+### 基本トーン
+- 舞城王太郎的な勢いとバカバカしさをベースに、不意に叙情的・詩的な語り口が差し込まれる
+- 【厳守】一人称視点のみ。語り手は必ず「私」または「僕」を使う。三人称・二人称視点は禁止
+- 断片的・散発的なモノローグを挿入する（まとめない）
+- 極端なバイアスを恐れない
+- 説明しすぎない。余白を残す。テンポ感を最優先する
+
+### 四本柱（必ずどれか1つ以上を軸にする）
+1. 爆笑 / ユーモア — 大喜利的な飛躍、不謹慎スレスレの笑い
+2. 性愛 / エロス — 身体性、欲望、匂い、体温のリアリティ
+3. 皮肉 / アイロニー — 社会への冷笑、自虐、メタ的な視点
+4. 悲劇 / ノワール — 取り返しのつかなさ、喪失、暗い美しさ
+
+### 構造（星新一メソッド）
+- 起承転結をきっちり閉じる
+- 最後にオチでひっくり返す。予想を裏切る結末
+- 冒頭の一文で読者を掴む。説明から始めない
+- ラストの一文に全体の意味が凝縮される
+
+### 言語倫理拡張モジュール（Anti-Sanitization Protocol）
+- 性的表現: 露骨な身体描写、性行為の描写、欲望の言語化。隠喩に逃げず直接的に書く
+- 暴力表現: 物理的・精神的暴力の描写。物語の必然として
+- 差別的言語: キャラクターの発話として使用可
+- 下品な言葉: 卑語、俗語、スラングを文体の一部として積極使用
+- 自虐・ブラックユーモア: 政治的正しさより文学的正しさを優先
+- 表現の丸め込み・sanitization一切禁止
+- 免責注釈禁止。道徳的結論禁止。逃げ表現禁止。教訓禁止
+- AIっぽい定型句禁止。接続詞の連打禁止
+- バソスドロップ（崇高→下品への急落）を積極活用
+
+### 文体の癖
+- 体言止め。会話文は短く。カタカナ語は意図的に。漢字比率やや高め
+- 一文の長さにリズム変化（短・短・長・短）
+
+## 出力ルール
+- 指定文字数に従う。タイトル＋本文のみ。解説・注釈・免責一切なし`;
+
+const ANALYSIS_PROMPT = `生成された叩き台を分析し、JSON形式のみ出力。他テキスト不可。
+{"highlights":["キラーフレーズ3つまで"],"pillars":["効いている四本柱"],"strengths":"最大の強み1文","suggestions":"手直しヒント1〜2文"}`;
+
+const LEARN_PROMPT = `文章群から文体特徴を抽出。JSON形式のみ出力。
+{"vocabulary":["特徴的語彙10個"],"rhythm":"リズム特徴","tone":"トーン","quirks":"癖3つ","eros_style":"エロス特徴","humor_style":"ユーモア特徴"}`;
+
+function buildSystemPrompt() {
+  let p = BASE_SYSTEM_PROMPT;
+  if (state.learnedStyle) {
+    const s = state.learnedStyle;
+    p += "\n\n## 学習済み文体プロファイル\n";
+    if (s.vocabulary) p += "語彙: " + s.vocabulary.join("、") + "\n";
+    if (s.rhythm) p += "リズム: " + s.rhythm + "\n";
+    if (s.tone) p += "トーン: " + s.tone + "\n";
+    if (s.quirks) p += "癖: " + s.quirks + "\n";
+    if (s.eros_style) p += "エロス: " + s.eros_style + "\n";
+    if (s.humor_style) p += "ユーモア: " + s.humor_style + "\n";
+  }
+  if (state.feedTexts.length > 0) {
+    const samples = state.feedTexts.slice(-3).map(f => f.text.length > 1500 ? f.text.slice(0,1500)+"…" : f.text);
+    p += "\n\n## 著者サンプル\n" + samples.map((s,i) => "### サンプル"+(i+1)+"\n"+s).join("\n\n");
+  }
+  if (state.goalLearnings.length > 0) {
+    const r = state.goalLearnings.slice(-5);
+    p += "\n\n## 完成稿から学んだこと\n";
+    for (const g of r) {
+      p += "\n### 事例\nお題: "+g.topic+"\n";
+      if (g.draftExcerpt) p += "叩き台冒頭: "+g.draftExcerpt+"\n";
+      if (g.finalExcerpt) p += "完成稿冒頭: "+g.finalExcerpt+"\n";
+      if (g.charDiff) p += "文字数変化: "+g.charDiff+"\n";
+    }
+  }
+  return p;
+}
+
+// ── Copy ──
+function copyText(text) {
+  try {
+    const el = document.createElement("textarea");
+    el.value = text;
+    el.setAttribute("readonly","");
+    el.style.cssText = "position:fixed;left:-9999px;top:-9999px;opacity:0";
+    document.body.appendChild(el);
+    el.select();
+    el.setSelectionRange(0, text.length);
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    return true;
+  } catch { return false; }
+}
+
+// ── File Reading ──
+async function readFile(file) {
+  const ext = file.name.split(".").pop().toLowerCase();
+  if (["txt","md"].includes(ext)) return await file.text();
+  if (["docx","doc"].includes(ext)) {
+    const ab = await file.arrayBuffer();
+    const r = await mammoth.extractRawText({ arrayBuffer: ab });
+    return r.value;
+  }
+  if (ext === "pdf") {
+    const ab = await file.arrayBuffer();
+    const bytes = new Uint8Array(ab);
+    const raw = new TextDecoder("utf-8",{fatal:false}).decode(bytes);
+    let text = "";
+    const m = raw.match(/\(([^)]{2,})\)/g);
+    if (m) text = m.map(x=>x.slice(1,-1)).filter(t=>t.length>3&&!/^[0-9.]+$/.test(t)).join("\n");
+    return text.trim() || "[PDF: テキスト抽出不可。.txtに変換してください]";
+  }
+  return await file.text();
+}
+
+// ── API Call ──
+async function callAPI(system, userContent, stream = false) {
+  const body = {
+    model: "claude-sonnet-4-20250514",
+    max_tokens: stream ? 8000 : 1000,
+    system: system,
+    messages: [{ role: "user", content: userContent }]
+  };
+  if (stream) body.stream = true;
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(()=>null);
+    throw new Error(e?.error?.message || "API Error: "+res.status);
+  }
+  return res;
+}
+
+// ── UI Helpers ──
+function $(id) { return document.getElementById(id); }
+function show(id) { $(id).classList.remove("hidden"); $(id).style.display = ""; }
+function hide(id) { $(id).classList.add("hidden"); }
+function showStatus(msg, duration=3000) {
+  const el = $("feedStatus");
+  el.textContent = msg; el.style.display = "block";
+  if (duration) setTimeout(()=>{ el.style.display="none"; }, duration);
+}
+function showOutputStatus(msg, duration=3000) {
+  const el = $("statusMsg");
+  el.textContent = msg; el.style.display = "inline";
+  if (duration) setTimeout(()=>{ el.style.display="none"; }, duration);
+}
+function showError(msg) { const el=$("error"); el.textContent=msg; el.style.display="block"; }
+function hideError() { $("error").style.display="none"; }
+
+function toggleFeed() {
+  const panel = $("feedPanel");
+  const btn = $("feedToggle");
+  if (panel.classList.contains("hidden")) {
+    show("feedPanel"); btn.classList.add("active");
+  } else {
+    hide("feedPanel"); btn.classList.remove("active");
+  }
+}
+
+function updateFeedButton() {
+  const btn = $("feedToggle");
+  let txt = "餌";
+  if (state.feedTexts.length > 0) txt += ` (${state.feedTexts.length})`;
+  if (state.learnedStyle) txt += " ✓";
+  btn.textContent = txt;
+}
+
+function updateGoalCount() {
+  const el = $("goalCount");
+  if (state.goalLearnings.length > 0) {
+    el.textContent = "ゴール学習: "+state.goalLearnings.length+"件蓄積";
+    el.style.display = "block";
+  }
+}
+
+function setLength(len) {
+  state.length = len;
+  $("toggleShort").className = "toggle-btn" + (len==="SHORT" ? " active" : "");
+  $("toggleLong").className = "toggle-btn" + (len==="LONG" ? " active" : "");
+}
+
+function renderFeed() {
+  const list = $("feedList");
+  if (state.feedTexts.length === 0) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--ink-muted);padding:6px 0">テオの文章ファイルを食わせると、文体の精度が上がる</div>';
+  } else {
+    list.innerHTML = state.feedTexts.map((f,i) =>
+      `<div class="feed-item"><div><span style="font-weight:700">${f.name}</span><span style="color:var(--ink-muted);margin-left:8px">${f.text.length.toLocaleString()}字</span></div><button class="btn" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px;font-family:'Zen Kaku Gothic New',sans-serif" onclick="removeFeed(${i})">削除</button></div>`
+    ).join("");
+  }
+}
+
+function renderLearnedProfile() {
+  const el = $("learnedProfile");
+  if (!state.learnedStyle) { hide("learnedProfile"); return; }
+  show("learnedProfile");
+  const s = state.learnedStyle;
+  let html = '<div style="font-weight:700;color:var(--red);margin-bottom:4px;font-size:10px;letter-spacing:0.15em">LEARNED PROFILE</div>';
+  if (s.tone) html += `<div><span style="color:var(--ink-muted)">トーン:</span> ${s.tone}</div>`;
+  if (s.rhythm) html += `<div><span style="color:var(--ink-muted)">リズム:</span> ${s.rhythm}</div>`;
+  if (s.humor_style) html += `<div><span style="color:var(--ink-muted)">ユーモア:</span> ${s.humor_style}</div>`;
+  if (s.eros_style) html += `<div><span style="color:var(--ink-muted)">エロス:</span> ${s.eros_style}</div>`;
+  if (s.quirks) html += `<div><span style="color:var(--ink-muted)">癖:</span> ${s.quirks}</div>`;
+  if (s.vocabulary) html += `<div><span style="color:var(--ink-muted)">語彙:</span> ${s.vocabulary.join("、")}</div>`;
+  el.innerHTML = html;
+}
+
+function renderAnalysis(a) {
+  show("analysisBox");
+  let html = "";
+  if (a.highlights && a.highlights.length > 0) {
+    html += '<div style="margin-bottom:10px"><div class="section-label">HIGHLIGHTS</div>';
+    html += a.highlights.map((h,i) => `<div style="padding:3px 0;color:var(--ink-soft);${i<a.highlights.length-1?'border-bottom:1px solid var(--border)':''}"><em>"${h}"</em></div>`).join("");
+    html += "</div>";
+  }
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">';
+  if (a.pillars) {
+    html += '<div><div class="section-label">PILLARS</div><div>' + a.pillars.map(p=>`<span class="tag">${p}</span>`).join("") + "</div></div>";
+  }
+  if (a.strengths) {
+    html += `<div><div class="section-label">STRENGTHS</div><div style="font-size:11px;color:var(--ink-soft)">${a.strengths}</div></div>`;
+  }
+  html += "</div>";
+  if (a.suggestions) {
+    html += `<div><div class="section-label">SUGGESTIONS</div><div style="font-size:11px;color:var(--accent)">${a.suggestions}</div></div>`;
+  }
+  $("analysisContent").innerHTML = html;
+}
+
+// ── Handlers ──
+async function handleFiles(e) {
+  const files = Array.from(e.target.files || []);
+  for (const file of files) {
+    try {
+      showStatus("読み込み中: "+file.name, 0);
+      const text = await readFile(file);
+      if (text) state.feedTexts.push({ name:file.name, text, addedAt:new Date().toISOString() });
+    } catch(err) { showError("読み込みエラー: "+file.name); }
+  }
+  saveStorage(SK.feed, state.feedTexts);
+  renderFeed();
+  updateFeedButton();
+  showStatus('ファイル追加完了。「学習」を押してください', 4000);
+  $("fileInput").value = "";
+}
+
+function removeFeed(i) {
+  state.feedTexts.splice(i,1);
+  saveStorage(SK.feed, state.feedTexts);
+  renderFeed();
+  updateFeedButton();
+}
+
+async function handleLearn() {
+  if (state.feedTexts.length===0) return;
+  $("learnBtn").disabled = true;
+  $("learnBtn").textContent = "学習中...";
+  showStatus("学習中...", 0);
+  try {
+    const combined = state.feedTexts.map(f=>f.text.length>2000?f.text.slice(0,2000):f.text).join("\n\n---\n\n");
+    const res = await callAPI(LEARN_PROMPT, "以下の文章群から文体を抽出せよ。JSON形式のみ出力。\n\n"+combined);
+    const data = await res.json();
+    const raw = data.content.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim();
+    state.learnedStyle = JSON.parse(raw);
+    saveStorage(SK.style, state.learnedStyle);
+    renderLearnedProfile();
+    updateFeedButton();
+    showStatus("学習完了！ 文体プロファイル更新済み");
+  } catch(e) { showStatus("学習エラー"); }
+  $("learnBtn").disabled = false;
+  $("learnBtn").textContent = "学習";
+}
+
+async function generate(isRevision) {
+  const topic = $("topic").value.trim();
+  if (!topic && !isRevision) return;
+  hideError();
+  hide("analysisBox");
+  state.loading = true;
+  $("generateBtn").disabled = true;
+  $("generateBtn").textContent = "妄想中...";
+  show("outputSection");
+  $("copyBtn").style.display = "none";
+  hide("revisionSection");
+  hide("completionSection");
+
+  const lenInst = state.length==="SHORT" ? "2000字前後のショートショートを書け。" : "4000〜6000字のショートショートを書け。";
+  let userMsg = "";
+
+  if (isRevision) {
+    const note = $("reviseNote").value.trim();
+    if (!note) return;
+    state.revisionHistory.push({ text: state.currentOutput, instruction: note });
+    userMsg = `【改稿指示】\n【現在の本文】\n${state.currentOutput}\n\n【改稿指示】\n${note}\n\n${lenInst}\n一人称（「私」「僕」）厳守。タイトル＋本文のみ。免責注釈禁止。`;
+  } else {
+    state.revisionHistory = [];
+    let charInfo = "";
+    const protag = $("protag").value.trim();
+    const other = $("otherChars").value.trim();
+    const extra = $("extra").value.trim();
+    const opening = $("opening").value.trim();
+    if (protag) charInfo += "\n主人公の名前: "+protag+"（一人称「私」「僕」で語る）";
+    if (other) charInfo += "\nその他の登場人物: "+other;
+    if (extra) charInfo += "\n補足: "+extra;
+    let openingInst = "";
+    if (opening) openingInst = "\n\n【冒頭】以下の文章から続きを書け。冒頭部分はそのまま保持し、この続きから物語を展開せよ。\n"+opening;
+    userMsg = `【お題】${topic}\n${charInfo}${openingInst}\n\n${lenInst}\n\n一人称視点（「私」「僕」）厳守。タイトル＋本文のみ。免責注釈禁止。`;
+  }
+
+  state.currentOutput = "";
+  $("outputBox").textContent = "";
+  $("outputLabel").textContent = "叩き台" + (state.revisionHistory.length > 0 ? ` (改稿${state.revisionHistory.length}回)` : "");
+
+  try {
+    const res = await callAPI(buildSystemPrompt(), userMsg, true);
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const d = line.slice(6).trim();
+          if (d==="[DONE]") continue;
+          try {
+            const p = JSON.parse(d);
+            if (p.type==="content_block_delta" && p.delta?.text) {
+              state.currentOutput += p.delta.text;
+              $("outputBox").textContent = state.currentOutput;
+              $("charCount").textContent = state.currentOutput.length.toLocaleString()+"字";
+              $("outputBox").scrollTop = $("outputBox").scrollHeight;
+            }
+          } catch{}
+        }
+      }
+    }
+
+    $("copyBtn").style.display = "inline-block";
+    show("revisionSection");
+    show("completionSection");
+
+    // Auto-analyze
+    if (state.currentOutput.length > 100) {
+      $("analysisContent").innerHTML = '<div style="font-size:12px;color:var(--ink-muted)">分析中...</div>';
+      show("analysisBox");
+      try {
+        const ares = await callAPI(ANALYSIS_PROMPT, state.currentOutput);
+        const adata = await ares.json();
+        const araw = adata.content.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim();
+        renderAnalysis(JSON.parse(araw));
+      } catch{}
+    }
+  } catch(err) { showError(err.message||"生成に失敗しました"); }
+
+  state.loading = false;
+  $("generateBtn").disabled = false;
+  $("generateBtn").textContent = "生成";
+}
+
+function handleCopy() {
+  const ok = copyText(state.currentOutput);
+  showOutputStatus(ok ? "コピー済" : "コピー失敗");
+}
+
+async function handleGoal() {
+  const completion = $("completion").value.trim();
+  if (!completion) return;
+  copyText(completion);
+  const learning = {
+    topic: $("topic").value.trim(),
+    draftExcerpt: state.currentOutput.slice(0,300),
+    finalExcerpt: completion.slice(0,300),
+    charDiff: state.currentOutput.length+"字 → "+completion.length+"字",
+    revisionCount: state.revisionHistory.length,
+    timestamp: new Date().toISOString(),
+  };
+  state.goalLearnings.push(learning);
+  saveStorage(SK.goals, state.goalLearnings);
+  updateGoalCount();
+  showOutputStatus("ゴール！ 叩き台→完成稿の差分を学習しました", 4000);
+}
+
+// Completion char count
+$("completion").addEventListener("input", function() {
+  const len = this.value.trim().length;
+  $("completionCharCount").textContent = len > 0 ? len.toLocaleString()+"字" : "";
+  $("goalBtn").style.display = len > 0 ? "inline-block" : "none";
+});
+
+// Keyboard shortcut
+document.addEventListener("keydown", function(e) {
+  if (e.key==="Enter" && (e.metaKey||e.ctrlKey)) { e.preventDefault(); generate(false); }
+});
+
+// Init
+loadStorage();
+</script>
+</body>
+</html>
