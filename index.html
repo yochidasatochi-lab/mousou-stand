@@ -109,7 +109,25 @@
 </style>
 </head>
 <body>
-<div class="container" id="app">
+
+<!-- API Key Gate -->
+<div id="keyGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center">
+  <div style="max-width:400px;width:100%;padding:24px;text-align:center">
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:4px">Mousou Stand</h1>
+    <div style="font-size:11px;color:var(--ink-muted);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:32px">Breaking News Fiction — ねぇミンド</div>
+    <div style="text-align:left;margin-bottom:16px">
+      <label class="label">Anthropic API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;color:var(--ink);padding:12px;font-size:14px;font-family:'Zen Kaku Gothic New',sans-serif;outline:none">
+    </div>
+    <button class="btn btn-red" style="width:100%;padding:12px;font-size:14px" onclick="saveApiKey()">起動</button>
+    <div id="keyError" style="font-size:11px;color:var(--red);margin-top:10px;display:none"></div>
+    <div style="font-size:10px;color:var(--ink-muted);margin-top:20px;line-height:1.6">
+      APIキーはブラウザのlocalStorageにのみ保存されます。<br>外部に送信されることはありません。
+    </div>
+  </div>
+</div>
+
+<div class="container" id="app" style="display:none">
 
   <!-- Header -->
   <div class="flex flex-between flex-center" style="margin-bottom:32px">
@@ -223,7 +241,10 @@
   <!-- Footer -->
   <div class="footer">
     <div class="footer-text">Mousou Stand v4.0</div>
-    <div class="footer-brand">neh mind</div>
+    <div class="flex flex-center gap-8">
+      <button onclick="resetApiKey()" style="background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:9px;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:0.1em;text-decoration:underline">APIキー変更</button>
+      <div class="footer-brand">neh mind</div>
+    </div>
   </div>
 </div>
 
@@ -370,6 +391,8 @@ async function readFile(file) {
 
 // ── API Call ──
 async function callAPI(system, userContent, stream = false) {
+  const apiKey = localStorage.getItem("ms_api_key");
+  if (!apiKey) { showError("APIキーが設定されていません"); throw new Error("No API key"); }
   const body = {
     model: "claude-sonnet-4-20250514",
     max_tokens: stream ? 8000 : 1000,
@@ -379,11 +402,12 @@ async function callAPI(system, userContent, stream = false) {
   if (stream) body.stream = true;
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
     body: JSON.stringify(body)
   });
   if (!res.ok) {
     const e = await res.json().catch(()=>null);
+    if (res.status === 401) { showError("APIキーが無効です。フッターの「APIキー変更」から再設定してください"); }
     throw new Error(e?.error?.message || "API Error: "+res.status);
   }
   return res;
@@ -654,10 +678,47 @@ $("completion").addEventListener("input", function() {
 // Keyboard shortcut
 document.addEventListener("keydown", function(e) {
   if (e.key==="Enter" && (e.metaKey||e.ctrlKey)) { e.preventDefault(); generate(false); }
+  if (e.key==="Enter" && e.target.id==="apiKeyInput") { e.preventDefault(); saveApiKey(); }
 });
 
+// ── API Key Gate ──
+function saveApiKey() {
+  const key = document.getElementById("apiKeyInput").value.trim();
+  if (!key) {
+    document.getElementById("keyError").textContent = "APIキーを入力してください";
+    document.getElementById("keyError").style.display = "block";
+    return;
+  }
+  if (!key.startsWith("sk-")) {
+    document.getElementById("keyError").textContent = "APIキーは sk- で始まります";
+    document.getElementById("keyError").style.display = "block";
+    return;
+  }
+  localStorage.setItem("ms_api_key", key);
+  document.getElementById("keyGate").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  loadStorage();
+}
+
+function resetApiKey() {
+  if (confirm("APIキーをリセットしますか？")) {
+    localStorage.removeItem("ms_api_key");
+    document.getElementById("app").style.display = "none";
+    document.getElementById("apiKeyInput").value = "";
+    document.getElementById("keyError").style.display = "none";
+    document.getElementById("keyGate").style.display = "flex";
+  }
+}
+
 // Init
-loadStorage();
+(function() {
+  const key = localStorage.getItem("ms_api_key");
+  if (key) {
+    document.getElementById("keyGate").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    loadStorage();
+  }
+})();
 </script>
 </body>
 </html>
