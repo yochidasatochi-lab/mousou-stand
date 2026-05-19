@@ -12,23 +12,24 @@
     --ink: #FFFFFF; --ink-soft: #FFE0E0; --ink-muted: #FFB0B0;
     --red: #1a1410; --green: #FFFFFF; --gold: #7A6830;
     --border: rgba(255,255,255,0.25); --border-dark: rgba(255,255,255,0.4); --accent: #FFE0E0;
+    --deep-green: #2D4A3E;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Zen Kaku Gothic New', sans-serif; }
   .container { max-width: 720px; margin: 0 auto; padding: 36px 24px; }
 
-  h1 { font-size: 40px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); font-family: 'Playfair Display', serif; }
   .subtitle { font-size: 13px; color: var(--ink-muted); margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
-  .label { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; font-weight: 700; }
+  .label { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; margin-bottom: 6px; font-weight: 700; }
   .label-hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
 
   textarea, input[type="text"], input[type="password"] {
-    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
-    color: var(--ink); padding: 10px 12px; font-size: 16px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    width: 100%; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.15); border-radius: 3px;
+    color: #1a1410; padding: 10px 12px; font-size: 16px; font-family: 'Zen Kaku Gothic New', sans-serif;
     outline: none; transition: border-color 0.2s; line-height: 1.6;
   }
-  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: var(--border-dark); }
-  textarea::placeholder, input::placeholder { color: rgba(255,255,255,0.35); opacity: 1; }
+  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: rgba(0,0,0,0.35); }
+  textarea::placeholder, input::placeholder { color: rgba(0,0,0,0.3); opacity: 1; }
   textarea { resize: vertical; }
 
   .btn {
@@ -37,7 +38,7 @@
   }
   .btn-red { background: #1a1410; color: #fff; }
   .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; }
-  .btn-green { background: #FFFFFF; color: #E64D4D; }
+  .btn-green { background: #2D4A3E; color: #fff; }
   .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
   .btn-sm { padding: 4px 10px; font-size: 12px; }
   .btn-feed {
@@ -56,32 +57,32 @@
   .toggle-btn:not(.active) { background: transparent; color: var(--ink-soft); font-weight: 400; }
 
   .output-box {
-    background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 3px;
+    background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px;
     padding: 20px 18px; max-height: 460px; overflow-y: auto;
-    font-size: 17px; line-height: 2; white-space: pre-wrap; color: #fff;
+    font-size: 17px; line-height: 2; white-space: pre-wrap; color: #1a1410;
   }
   .analysis-box {
-    margin-top: 14px; background: rgba(0,0,0,0.1); border: 1px solid var(--border);
-    border-left: 3px solid #fff; border-radius: 3px; padding: 14px 16px;
+    margin-top: 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1);
+    border-left: 3px solid #2D4A3E; border-radius: 3px; padding: 14px 16px; color: #1a1410;
   }
-  .completion-area { margin-top: 20px; border-top: 2px solid #fff; padding-top: 16px; }
-  .completion-area textarea { border-color: rgba(255,255,255,0.3); }
-  .completion-area textarea:focus { border-color: #fff; }
+  .completion-area { margin-top: 20px; border-top: 2px solid rgba(255,255,255,0.6); padding-top: 16px; }
+  .completion-area textarea { border-color: rgba(0,0,0,0.15); }
+  .completion-area textarea:focus { border-color: rgba(0,0,0,0.35); }
 
   .feed-panel {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
-    padding: 18px; margin-bottom: 22px;
+    background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1); border-radius: 4px;
+    padding: 18px; margin-bottom: 22px; color: #1a1410;
   }
   .feed-item {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 10px; background: rgba(0,0,0,0.1); border-radius: 3px; font-size: 13px; margin-bottom: 4px;
+    padding: 6px 10px; background: #F5F0EB; border-radius: 3px; font-size: 13px; margin-bottom: 4px;
   }
   .learned-profile {
-    background: rgba(0,0,0,0.1); border: 1px solid var(--border); border-radius: 3px;
+    background: #F5F0EB; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px;
     padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.7;
   }
-  .tag { padding: 2px 7px; font-size: 12px; background: #fff; color: #E64D4D; border-radius: 2px; display: inline-block; margin-right: 5px; }
-  .section-label { font-size: 12px; font-weight: 700; color: #FFB0B0; margin-bottom: 3px; letter-spacing: 0.15em; }
+  .tag { padding: 2px 7px; font-size: 12px; background: #2D4A3E; color: #fff; border-radius: 2px; display: inline-block; margin-right: 5px; }
+  .section-label { font-size: 12px; font-weight: 700; color: #2D4A3E; margin-bottom: 3px; letter-spacing: 0.15em; }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .flex { display: flex; }
@@ -145,20 +146,20 @@
   <!-- Feed Panel -->
   <div id="feedPanel" class="feed-panel hidden">
     <div class="flex flex-between flex-center" style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:700;color:var(--ink)">餌 — 文体学習</div>
+      <div style="font-size:13px;font-weight:700;color:#1a1410">餌 — 文体学習</div>
       <div class="flex gap-8">
         <label class="btn btn-green" style="padding:5px 12px;font-size:13px;cursor:pointer">
           ファイル追加
           <input type="file" id="fileInput" accept=".txt,.md,.docx,.doc,.pdf" multiple onchange="handleFiles(event)" style="display:none">
         </label>
-        <button class="btn btn-red" id="learnBtn" style="padding:5px 12px;font-size:13px" onclick="handleLearn()">学習</button>
+        <button class="btn btn-green" id="learnBtn" style="padding:5px 12px;font-size:13px" onclick="handleLearn()">学習</button>
       </div>
     </div>
-    <div style="font-size:12px;color:var(--ink-muted);margin-bottom:8px">.txt .md .docx .pdf 対応　ファイル追加後「学習」で文体を吸収</div>
-    <div id="feedStatus" style="font-size:13px;color:var(--ink);margin-bottom:8px;font-weight:700;display:none"></div>
+    <div style="font-size:12px;color:#666;margin-bottom:8px">.txt .md .docx .pdf 対応　ファイル追加後「学習」で文体を吸収</div>
+    <div id="feedStatus" style="font-size:13px;color:#2D4A3E;margin-bottom:8px;font-weight:700;display:none"></div>
     <div id="learnedProfile" class="learned-profile hidden"></div>
     <div id="feedList"></div>
-    <div id="goalCount" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px;color:var(--ink-muted);display:none"></div>
+    <div id="goalCount" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.1);font-size:13px;color:#2D4A3E;display:none"></div>
   </div>
 
   <!-- Topic -->
@@ -208,7 +209,7 @@
       <div class="label" style="margin-bottom:0" id="outputLabel">叩き台</div>
       <div class="flex flex-center gap-8">
         <span style="font-size:13px;color:var(--ink-muted)" id="charCount">0字</span>
-        <span id="statusMsg" style="font-size:13px;color:var(--ink);font-weight:700;display:none"></span>
+        <span id="statusMsg" style="font-size:13px;color:#fff;font-weight:700;display:none"></span>
         <button class="btn btn-outline btn-sm" id="copyBtn" onclick="handleCopy()" style="display:none">コピー</button>
       </div>
     </div>
@@ -232,7 +233,7 @@
     <!-- Completion -->
     <div id="completionSection" class="completion-area hidden">
       <div class="flex flex-between flex-center" style="margin-bottom:8px">
-        <label class="label" style="margin-bottom:0;color:var(--red)">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
+        <label class="label" style="margin-bottom:0;color:#fff">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
         <div class="flex flex-center gap-8">
           <span style="font-size:13px;color:var(--ink-muted)" id="completionCharCount"></span>
           <button class="btn btn-red btn-sm" id="goalBtn" style="padding:5px 14px;font-size:13px;display:none" onclick="handleGoal()">ゴール</button>
@@ -469,10 +470,10 @@ function setLength(len) {
 function renderFeed() {
   const list = $("feedList");
   if (state.feedTexts.length === 0) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--ink-muted);padding:6px 0">テオの文章ファイルを食わせると、文体の精度が上がる</div>';
+    list.innerHTML = '<div style="font-size:12px;color:#666;padding:6px 0">テオの文章ファイルを食わせると、文体の精度が上がる</div>';
   } else {
     list.innerHTML = state.feedTexts.map((f,i) =>
-      `<div class="feed-item"><div><span style="font-weight:700">${f.name}</span><span style="color:var(--ink-muted);margin-left:8px">${f.text.length.toLocaleString()}字</span></div><button class="btn" style="background:none;border:none;color:#FFB0B0;cursor:pointer;font-size:13px;font-family:'Zen Kaku Gothic New',sans-serif" onclick="removeFeed(${i})">削除</button></div>`
+      `<div class="feed-item"><div><span style="font-weight:700;color:#1a1410">${f.name}</span><span style="color:#666;margin-left:8px">${f.text.length.toLocaleString()}字</span></div><button class="btn" style="background:none;border:none;color:#E64D4D;cursor:pointer;font-size:13px;font-family:'Zen Kaku Gothic New',sans-serif" onclick="removeFeed(${i})">削除</button></div>`
     ).join("");
   }
 }
@@ -482,13 +483,13 @@ function renderLearnedProfile() {
   if (!state.learnedStyle) { hide("learnedProfile"); return; }
   show("learnedProfile");
   const s = state.learnedStyle;
-  let html = '<div style="font-weight:700;color:#FFB0B0;margin-bottom:4px;font-size:12px;letter-spacing:0.15em">LEARNED PROFILE</div>';
-  if (s.tone) html += `<div><span style="color:var(--ink-muted)">トーン:</span> ${s.tone}</div>`;
-  if (s.rhythm) html += `<div><span style="color:var(--ink-muted)">リズム:</span> ${s.rhythm}</div>`;
-  if (s.humor_style) html += `<div><span style="color:var(--ink-muted)">ユーモア:</span> ${s.humor_style}</div>`;
-  if (s.eros_style) html += `<div><span style="color:var(--ink-muted)">エロス:</span> ${s.eros_style}</div>`;
-  if (s.quirks) html += `<div><span style="color:var(--ink-muted)">癖:</span> ${s.quirks}</div>`;
-  if (s.vocabulary) html += `<div><span style="color:var(--ink-muted)">語彙:</span> ${s.vocabulary.join("、")}</div>`;
+  let html = '<div style="font-weight:700;color:#2D4A3E;margin-bottom:4px;font-size:12px;letter-spacing:0.15em">LEARNED PROFILE</div>';
+  if (s.tone) html += `<div><span style="color:#666">トーン:</span> ${s.tone}</div>`;
+  if (s.rhythm) html += `<div><span style="color:#666">リズム:</span> ${s.rhythm}</div>`;
+  if (s.humor_style) html += `<div><span style="color:#666">ユーモア:</span> ${s.humor_style}</div>`;
+  if (s.eros_style) html += `<div><span style="color:#666">エロス:</span> ${s.eros_style}</div>`;
+  if (s.quirks) html += `<div><span style="color:#666">癖:</span> ${s.quirks}</div>`;
+  if (s.vocabulary) html += `<div><span style="color:#666">語彙:</span> ${s.vocabulary.join("、")}</div>`;
   el.innerHTML = html;
 }
 
@@ -497,7 +498,7 @@ function renderAnalysis(a) {
   let html = "";
   if (a.highlights && a.highlights.length > 0) {
     html += '<div style="margin-bottom:10px"><div class="section-label">HIGHLIGHTS</div>';
-    html += a.highlights.map((h,i) => `<div style="padding:3px 0;color:var(--ink-soft);${i<a.highlights.length-1?'border-bottom:1px solid var(--border)':''}"><em>"${h}"</em></div>`).join("");
+    html += a.highlights.map((h,i) => `<div style="padding:3px 0;color:#1a1410;${i<a.highlights.length-1?'border-bottom:1px solid rgba(0,0,0,0.08)':''}"><em>"${h}"</em></div>`).join("");
     html += "</div>";
   }
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">';
@@ -505,11 +506,11 @@ function renderAnalysis(a) {
     html += '<div><div class="section-label">PILLARS</div><div>' + a.pillars.map(p=>`<span class="tag">${p}</span>`).join("") + "</div></div>";
   }
   if (a.strengths) {
-    html += `<div><div class="section-label">STRENGTHS</div><div style="font-size:13px;color:var(--ink-soft)">${a.strengths}</div></div>`;
+    html += `<div><div class="section-label">STRENGTHS</div><div style="font-size:13px;color:#1a1410">${a.strengths}</div></div>`;
   }
   html += "</div>";
   if (a.suggestions) {
-    html += `<div><div class="section-label">SUGGESTIONS</div><div style="font-size:13px;color:var(--accent)">${a.suggestions}</div></div>`;
+    html += `<div><div class="section-label">SUGGESTIONS</div><div style="font-size:13px;color:#1a1410">${a.suggestions}</div></div>`;
   }
   $("analysisContent").innerHTML = html;
 }
@@ -633,7 +634,7 @@ async function generate(isRevision) {
 
     // Auto-analyze
     if (state.currentOutput.length > 100) {
-      $("analysisContent").innerHTML = '<div style="font-size:12px;color:var(--ink-muted)">分析中...</div>';
+      $("analysisContent").innerHTML = '<div style="font-size:12px;color:#666">分析中...</div>';
       show("analysisBox");
       try {
         const ares = await callAPI(ANALYSIS_PROMPT, state.currentOutput);
