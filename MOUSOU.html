@@ -16,77 +16,131 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Zen Kaku Gothic New', sans-serif; }
-  .container { max-width: 720px; margin: 0 auto; padding: 36px 24px; }
+  .container { max-width: 720px; margin: 0 auto; padding: 32px 24px; }
 
   h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); font-family: 'Playfair Display', serif; }
   .subtitle { font-size: 13px; color: var(--ink-muted); margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
-  .label { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; margin-bottom: 6px; font-weight: 700; }
-  .label-hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .label { display: block; font-size: 13px; color: #FFFFFF; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.03em; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+  .label-hint { color: rgba(255,255,255,0.7); font-weight: 400; letter-spacing: 0; text-shadow: none; }
 
+  /* Input fields */
   textarea, input[type="text"], input[type="password"] {
-    width: 100%; background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 3px;
+    width: 100%; background: #FFFFFF; border: 2px solid rgba(0,0,0,0.1); border-radius: 8px;
     color: #1a1410; padding: 10px 12px; font-size: 16px; font-family: 'Zen Kaku Gothic New', sans-serif;
-    outline: none; transition: border-color 0.2s; line-height: 1.6;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; line-height: 1.6;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
-  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: #2D4A3E; box-shadow: 0 0 0 2px rgba(45,74,62,0.12); }
+  textarea:focus, input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #2D4A3E;
+    box-shadow: 0 0 0 3px rgba(45,74,62,0.15);
+  }
   textarea::placeholder, input::placeholder { color: rgba(0,0,0,0.3); opacity: 1; }
   textarea { resize: vertical; }
 
+  /* Base button — used for secondary actions inside panels */
   .btn {
     padding: 8px 18px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
-    border: 1.5px solid transparent; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+    border: 1.5px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s;
   }
   .btn-red { background: #1a1410; color: #fff; border-color: rgba(255,255,255,0.2); }
   .btn-red:not(:disabled):hover { border-color: rgba(255,255,255,0.45); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
   .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; box-shadow: none; }
-  .btn-green { background: #2D4A3E; color: #fff; border-color: #1a2e26; }
+  .btn-green { background: #2D4A3E; color: #fff; border-color: #1a2e26; border-radius: 8px; }
   .btn-green:hover { border-color: #0f1c17; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-  .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
-  .btn-outline:hover { border-color: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); border-radius: 8px; }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.9); }
   .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  /* 餌 button */
   .btn-feed {
-    padding: 7px 13px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
-    border: 1.5px solid #fff; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+    padding: 8px 16px; font-size: 13px; font-weight: 600; font-family: 'Zen Kaku Gothic New', sans-serif;
+    background: rgba(255,255,255,0.15); color: #FFFFFF;
+    border: 2px solid rgba(255,255,255,0.5); border-radius: 8px; cursor: pointer; transition: all 0.2s;
   }
-  .btn-feed:hover { box-shadow: 0 0 0 1px rgba(255,255,255,0.5); }
-  .btn-feed.active { background: #fff; color: #E64D4D; }
-  .btn-feed:not(.active) { background: transparent; color: #fff; }
+  .btn-feed:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.75); }
+  .btn-feed.active { background: #fff; color: #E64D4D; border-color: #fff; }
 
-  .toggle-group { display: flex; border: 1.5px solid rgba(255,255,255,0.55); border-radius: 3px; overflow: hidden; }
-  .toggle-btn {
-    padding: 8px 14px; font-size: 14px; font-family: 'Zen Kaku Gothic New', sans-serif;
-    border: none; cursor: pointer; transition: all 0.2s;
+  /* Mode toggle — pill */
+  .mode-toggle {
+    display: inline-flex;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.1);
   }
-  .toggle-btn.active { background: #fff; color: #E64D4D; font-weight: 700; box-shadow: inset 0 -2px 0 #2D4A3E; }
-  .toggle-btn:not(.active) { background: transparent; color: var(--ink-soft); font-weight: 400; }
-  .toggle-btn:not(.active):hover { background: rgba(255,255,255,0.1); }
+  .mode-pill {
+    padding: 8px 28px;
+    font-size: 14px; font-weight: 600;
+    border: none; cursor: pointer;
+    background: transparent; color: rgba(255,255,255,0.65);
+    transition: all 0.2s; letter-spacing: 0.05em;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+  .mode-pill.active { background: #FFFFFF; color: #E64D4D; border-radius: 999px; }
+  .mode-pill:hover:not(.active) { color: rgba(255,255,255,0.95); }
 
+  /* Length toggle — smaller pill */
+  .length-toggle {
+    display: inline-flex;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.1);
+  }
+  .length-pill {
+    padding: 6px 20px;
+    font-size: 12px; font-weight: 600;
+    border: none; cursor: pointer;
+    background: transparent; color: rgba(255,255,255,0.65);
+    transition: all 0.2s; letter-spacing: 0.03em;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+  .length-pill.active { background: #2D4A3E; color: #FFFFFF; border-radius: 999px; }
+  .length-pill:hover:not(.active) { color: rgba(255,255,255,0.95); }
+
+  /* Primary generate button */
+  .btn-generate {
+    background: #FFFFFF; color: #E64D4D;
+    font-weight: 700; font-size: 15px; font-family: 'Zen Kaku Gothic New', sans-serif;
+    padding: 10px 36px; border: 2px solid #FFFFFF; border-radius: 999px;
+    cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .btn-generate:hover { background: #F5F0EB; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transform: translateY(-1px); }
+  .btn-generate:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .btn-generate:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; box-shadow: none; transform: none; border-color: transparent; }
+
+  /* Content cards (white surfaces) */
+  .output-card {
+    background: #FFFFFF;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    color: #1a1410;
+  }
   .output-box {
-    background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 3px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
-    padding: 20px 18px; max-height: 460px; overflow-y: auto;
-    font-size: 17px; line-height: 2; white-space: pre-wrap; color: #1a1410;
+    max-height: 460px; overflow-y: auto;
+    font-size: 17px; line-height: 2; white-space: pre-wrap;
   }
-  .analysis-box {
-    margin-top: 14px; background: #FFFFFF; border: 1.5px solid #C4B8A8;
-    border-left: 3px solid #2D4A3E; border-radius: 3px; padding: 14px 16px; color: #1a1410;
-  }
-  .completion-area { margin-top: 20px; border: 1.5px solid rgba(255,255,255,0.5); border-radius: 3px; padding: 16px; }
+  .analysis-box { background: #F5F0EB; border-left: 4px solid #2D4A3E; }
+  .completion-area { margin-top: 16px; border: 2px solid rgba(255,255,255,0.45); border-radius: 12px; padding: 16px; }
 
   .feed-panel {
-    background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 4px;
-    padding: 18px; margin-bottom: 22px; color: #1a1410;
+    background: #FFFFFF; border: 2px solid rgba(0,0,0,0.08); border-radius: 12px;
+    padding: 18px; margin-bottom: 20px; color: #1a1410;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   .feed-item {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 10px; background: #F5F0EB; border-radius: 3px; font-size: 13px; margin-bottom: 4px;
+    padding: 6px 10px; background: #F5F0EB; border-radius: 6px; font-size: 13px; margin-bottom: 4px;
   }
   .learned-profile {
-    background: #F5F0EB; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px;
+    background: #F5F0EB; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px;
     padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.7;
   }
-  .tag { padding: 2px 7px; font-size: 12px; background: #2D4A3E; color: #fff; border-radius: 2px; display: inline-block; margin-right: 5px; }
-  .section-label { font-size: 12px; font-weight: 700; color: #2D4A3E; margin-bottom: 3px; letter-spacing: 0.15em; }
+  .tag { padding: 2px 7px; font-size: 12px; background: #2D4A3E; color: #fff; border-radius: 3px; display: inline-block; margin-right: 5px; }
+  .section-label { font-size: 11px; font-weight: 700; color: #2D4A3E; margin-bottom: 4px; letter-spacing: 0.15em; text-transform: uppercase; }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .flex { display: flex; }
@@ -101,7 +155,7 @@
   .mt-16 { margin-top: 16px; }
   .hidden { display: none; }
 
-  #revisionSection { border: 1.5px solid rgba(255,255,255,0.35); border-radius: 3px; padding: 12px 14px; }
+  #revisionSection { border: 2px solid rgba(255,255,255,0.35); border-radius: 12px; padding: 14px 16px; }
 
   .footer { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
   .footer-text { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; }
@@ -170,9 +224,9 @@
 
   <!-- Mode Toggle -->
   <div style="margin-bottom:20px">
-    <div class="toggle-group">
-      <button class="toggle-btn active" id="toggleNovel" onclick="setMode('novel')">小説</button>
-      <button class="toggle-btn" id="toggleColumn" onclick="setMode('column')">コラム</button>
+    <div class="mode-toggle">
+      <button class="mode-pill active" id="toggleNovel" onclick="setMode('novel')">小説</button>
+      <button class="mode-pill" id="toggleColumn" onclick="setMode('column')">コラム</button>
     </div>
   </div>
 
@@ -208,12 +262,12 @@
   </div>
 
   <!-- Controls -->
-  <div class="flex flex-center gap-10" style="margin-bottom:28px;flex-wrap:wrap">
-    <div class="toggle-group">
-      <button class="toggle-btn active" id="toggleShort" onclick="setLength('SHORT')">短篇 〜2,000字</button>
-      <button class="toggle-btn" id="toggleLong" onclick="setLength('LONG')">中篇 4,000〜6,000字</button>
+  <div class="flex flex-center gap-10" style="margin-bottom:24px;flex-wrap:wrap;align-items:center">
+    <div class="length-toggle">
+      <button class="length-pill active" id="toggleShort" onclick="setLength('SHORT')">短篇 〜2,000字</button>
+      <button class="length-pill" id="toggleLong" onclick="setLength('LONG')">中篇 4,000〜6,000字</button>
     </div>
-    <button class="btn btn-red" id="generateBtn" onclick="generate(false)">生成</button>
+    <button class="btn-generate" id="generateBtn" onclick="generate(false)">生成</button>
     <div style="font-size:12px;color:var(--ink-muted);margin-left:auto">⌘+Enter</div>
   </div>
 
@@ -222,19 +276,23 @@
 
   <!-- Output Section -->
   <div id="outputSection" class="hidden">
-    <div class="flex flex-between flex-center" style="margin-bottom:8px">
-      <div class="label" style="margin-bottom:0" id="outputLabel">叩き台</div>
-      <div class="flex flex-center gap-8">
-        <span style="font-size:13px;color:var(--ink-muted)" id="charCount">0字</span>
-        <span id="statusMsg" style="font-size:13px;color:#fff;font-weight:700;display:none"></span>
-        <button class="btn btn-outline btn-sm" id="copyBtn" onclick="handleCopy()" style="display:none">コピー</button>
-      </div>
-    </div>
-    <div class="output-box" id="outputBox"></div>
 
-    <!-- Analysis -->
-    <div id="analysisBox" class="analysis-box hidden">
-      <div class="label" style="margin-bottom:8px;color:var(--red)">分析</div>
+    <!-- Output card -->
+    <div class="output-card" style="margin-bottom:16px">
+      <div class="flex flex-between flex-center" style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#888" id="outputLabel">叩き台</div>
+        <div class="flex flex-center gap-8">
+          <span style="font-size:13px;color:#aaa" id="charCount">0字</span>
+          <span id="statusMsg" style="font-size:13px;color:#2D4A3E;font-weight:700;display:none"></span>
+          <button class="btn btn-green btn-sm" id="copyBtn" onclick="handleCopy()" style="display:none">コピー</button>
+        </div>
+      </div>
+      <div class="output-box" id="outputBox"></div>
+    </div>
+
+    <!-- Analysis card -->
+    <div id="analysisBox" class="output-card analysis-box hidden" style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#2D4A3E;margin-bottom:10px">分析</div>
       <div id="analysisContent"></div>
     </div>
 
@@ -250,7 +308,7 @@
     <!-- Completion -->
     <div id="completionSection" class="completion-area hidden">
       <div class="flex flex-between flex-center" style="margin-bottom:8px">
-        <label class="label" style="margin-bottom:0;color:#fff">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
+        <label class="label" style="margin-bottom:0">完成 <span class="label-hint">— 手直し後の原稿をペースト</span></label>
         <div class="flex flex-center gap-8">
           <span style="font-size:13px;color:var(--ink-muted)" id="completionCharCount"></span>
           <button class="btn btn-red btn-sm" id="goalBtn" style="padding:5px 14px;font-size:13px;display:none" onclick="handleGoal()">ゴール</button>
@@ -262,7 +320,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <div class="footer-text">Mousou Stand v4.2</div>
+    <div class="footer-text">Mousou Stand v4.3</div>
     <div class="flex flex-center gap-8">
       <button onclick="resetApiKey()" style="background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:11px;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:0.1em;text-decoration:underline">APIキー変更</button>
       <div class="footer-brand">neh mind</div>
@@ -527,8 +585,8 @@ function updateGoalCount() {
 
 function setLength(len) {
   state.length = len;
-  $("toggleShort").className = "toggle-btn" + (len==="SHORT" ? " active" : "");
-  $("toggleLong").className = "toggle-btn" + (len==="LONG" ? " active" : "");
+  $("toggleShort").className = "length-pill" + (len==="SHORT" ? " active" : "");
+  $("toggleLong").className = "length-pill" + (len==="LONG" ? " active" : "");
 }
 
 function setMode(mode) {
@@ -539,8 +597,8 @@ function setMode(mode) {
 
 function applyMode() {
   const isNovel = state.mode !== "column";
-  $("toggleNovel").className = "toggle-btn" + (isNovel ? " active" : "");
-  $("toggleColumn").className = "toggle-btn" + (!isNovel ? " active" : "");
+  $("toggleNovel").className = "mode-pill" + (isNovel ? " active" : "");
+  $("toggleColumn").className = "mode-pill" + (!isNovel ? " active" : "");
   $("novelFields").style.display = isNovel ? "" : "none";
   $("toggleShort").textContent = isNovel ? "短篇 〜2,000字" : "短篇 〜1,500字";
   $("toggleLong").textContent = isNovel ? "中篇 4,000〜6,000字" : "中篇 〜3,000字";
