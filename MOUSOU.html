@@ -24,53 +24,57 @@
   .label-hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
 
   textarea, input[type="text"], input[type="password"] {
-    width: 100%; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.15); border-radius: 3px;
+    width: 100%; background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 3px;
     color: #1a1410; padding: 10px 12px; font-size: 16px; font-family: 'Zen Kaku Gothic New', sans-serif;
     outline: none; transition: border-color 0.2s; line-height: 1.6;
   }
-  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: rgba(0,0,0,0.35); }
+  textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: #2D4A3E; box-shadow: 0 0 0 2px rgba(45,74,62,0.12); }
   textarea::placeholder, input::placeholder { color: rgba(0,0,0,0.3); opacity: 1; }
   textarea { resize: vertical; }
 
   .btn {
     padding: 8px 18px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
-    border: none; border-radius: 3px; cursor: pointer; transition: all 0.2s;
+    border: 1.5px solid transparent; border-radius: 3px; cursor: pointer; transition: all 0.2s;
   }
-  .btn-red { background: #1a1410; color: #fff; }
-  .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; }
-  .btn-green { background: #2D4A3E; color: #fff; }
-  .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .btn-red { background: #1a1410; color: #fff; border-color: rgba(255,255,255,0.2); }
+  .btn-red:not(:disabled):hover { border-color: rgba(255,255,255,0.45); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+  .btn-red:disabled { background: var(--surface-alt); color: var(--ink-muted); cursor: wait; box-shadow: none; }
+  .btn-green { background: #2D4A3E; color: #fff; border-color: #1a2e26; }
+  .btn-green:hover { border-color: #0f1c17; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
   .btn-sm { padding: 4px 10px; font-size: 12px; }
   .btn-feed {
     padding: 7px 13px; font-size: 14px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif;
     border: 1.5px solid #fff; border-radius: 3px; cursor: pointer; transition: all 0.2s;
   }
+  .btn-feed:hover { box-shadow: 0 0 0 1px rgba(255,255,255,0.5); }
   .btn-feed.active { background: #fff; color: #E64D4D; }
   .btn-feed:not(.active) { background: transparent; color: #fff; }
 
-  .toggle-group { display: flex; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .toggle-group { display: flex; border: 1.5px solid rgba(255,255,255,0.55); border-radius: 3px; overflow: hidden; }
   .toggle-btn {
     padding: 8px 14px; font-size: 14px; font-family: 'Zen Kaku Gothic New', sans-serif;
     border: none; cursor: pointer; transition: all 0.2s;
   }
-  .toggle-btn.active { background: #fff; color: #E64D4D; font-weight: 700; }
+  .toggle-btn.active { background: #fff; color: #E64D4D; font-weight: 700; box-shadow: inset 0 -2px 0 #2D4A3E; }
   .toggle-btn:not(.active) { background: transparent; color: var(--ink-soft); font-weight: 400; }
+  .toggle-btn:not(.active):hover { background: rgba(255,255,255,0.1); }
 
   .output-box {
-    background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px;
+    background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 3px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
     padding: 20px 18px; max-height: 460px; overflow-y: auto;
     font-size: 17px; line-height: 2; white-space: pre-wrap; color: #1a1410;
   }
   .analysis-box {
-    margin-top: 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1);
+    margin-top: 14px; background: #FFFFFF; border: 1.5px solid #C4B8A8;
     border-left: 3px solid #2D4A3E; border-radius: 3px; padding: 14px 16px; color: #1a1410;
   }
-  .completion-area { margin-top: 20px; border-top: 2px solid rgba(255,255,255,0.6); padding-top: 16px; }
-  .completion-area textarea { border-color: rgba(0,0,0,0.15); }
-  .completion-area textarea:focus { border-color: rgba(0,0,0,0.35); }
+  .completion-area { margin-top: 20px; border: 1.5px solid rgba(255,255,255,0.5); border-radius: 3px; padding: 16px; }
 
   .feed-panel {
-    background: #FFFFFF; border: 1px solid rgba(0,0,0,0.1); border-radius: 4px;
+    background: #FFFFFF; border: 1.5px solid #C4B8A8; border-radius: 4px;
     padding: 18px; margin-bottom: 22px; color: #1a1410;
   }
   .feed-item {
@@ -96,6 +100,8 @@
   .mt-14 { margin-top: 14px; }
   .mt-16 { margin-top: 16px; }
   .hidden { display: none; }
+
+  #revisionSection { border: 1.5px solid rgba(255,255,255,0.35); border-radius: 3px; padding: 12px 14px; }
 
   .footer { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
   .footer-text { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; }
@@ -256,7 +262,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <div class="footer-text">Mousou Stand v4.1</div>
+    <div class="footer-text">Mousou Stand v4.2</div>
     <div class="flex flex-center gap-8">
       <button onclick="resetApiKey()" style="background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:11px;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:0.1em;text-decoration:underline">APIキー変更</button>
       <div class="footer-brand">neh mind</div>
